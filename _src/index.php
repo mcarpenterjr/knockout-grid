@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'].'/mc-dev/smtlogin.php';
+require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +18,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/mc-dev/smtlogin.php';
 		<!-- jQuery -->
 		<script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
 		<!-- Libraries -->
+		<script src="/lib/knockout-2.7.17/knockout.js"></script>
 		<script src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 		<script src="/lib/sweetalert/sweetalert.min.js"></script>
 
@@ -37,9 +38,25 @@ require $_SERVER['DOCUMENT_ROOT'].'/mc-dev/smtlogin.php';
           <div class="panel-heading">
             <h3 class="panel-title">KO Grid Sample</h3>
           </div>
-          <div class="panel-body">
-
+          <div clas="panel-body">
+            100 records from the "bin_scan" table. <button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
           </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Bin</th>
+                <th>User Id</th>
+                <th>Last Scan</th>
+              </tr>
+            </thead>
+            <tbody data-bind='foreach: items'>
+              <tr>
+                <td><span data-bind='text: bin'></span></td>
+                <td><span data-bind='text: userid'></span></td>
+                <td><span data-bind='text: last_scan'></span></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
