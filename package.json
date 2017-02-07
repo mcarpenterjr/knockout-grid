@@ -1,0 +1,19 @@
+{
+  "name": "ko-grid-smt",
+  "version": "0.5.0",
+  "description": "KnockOut Js Grid for use at SMT Corporation",
+  "main": "_src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "/linux3/web/mc-dev/koGrid"
+  },
+  "author": "Mark N Carpenter Jr",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.8.0",
+    "gulp": "^3.9.1"
+  }
+}
