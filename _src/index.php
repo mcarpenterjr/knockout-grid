@@ -8,7 +8,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>Excess Inventory Entry</title>
+		<title>KO Grid Sample</title>
 
 		<!-- Styles -->
 		<link rel="stylesheet" type="text/css" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
