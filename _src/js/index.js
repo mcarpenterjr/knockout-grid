@@ -1,6 +1,7 @@
 $(document).ready(function() {
   $('#load').click(function() {
     ko.applyBindings(viewModel);
+    $(this).attr('disabled', true);
   });
 });
 

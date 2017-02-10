@@ -34,30 +34,63 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
   <body>
     <div class="container-fluid">
       <div class="row">
-        <div class="panel col-sm-6 col-sm-offset-3">
-          <div class="panel-heading">
-            <h3 class="panel-title">KO Grid Sample</h3>
-          </div>
-          <div clas="panel-body">
-            100 records from the "bin_scan" table. <button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Bin</th>
-                <th>User Id</th>
-                <th>Last Scan</th>
-              </tr>
-            </thead>
-            <tbody data-bind='foreach: items'>
-              <tr>
-                <td><span data-bind='text: bin'></span></td>
-                <td><span data-bind='text: userid'></span></td>
-                <td><span data-bind='text: last_scan'></span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+				<div class="col-sm-3">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title"> List controls</h3>
+						</div>
+						<div class="panel-body">
+							<button class="btn btn-primary btn-sm"><i class="fa fa-plus fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fa fa-minus fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fa fa-refresh fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fa fa-undo fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fa fa-columns fa-lg"></i></button>
+						</div>
+					</div>
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<h3 class="panel-title">Just a Gentle Reminder</h3>
+						</div>
+						<div class="panel-body">
+							<p>100 Records from the bin_scan table. The purpose of this
+							list is to show the simplicity and strength the KOjs lib offers.
+						  KO is simply iterating over json data received though an ajax request using an external php file.</p>
+							<p>KO allows us to leverage a MVC, Model View Controller design
+							application design format. Breaking our application into 3 layers,
+							a data layer (the Model), a presentation layer (the View) and a
+							"functions layer (the Controller)".</p>
+							<p>Documentation on KO is always avaiable on the <a href="http://www.knockoutjs.com" target="_blank">knockoutJS</a> website.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-9">
+	        <div class="panel panel-default">
+	          <div class="panel-heading">
+	            <h3 class="panel-title">KO Grid Sample</h3>
+	          </div>
+	          <div class="panel-body">
+							<p>100 records from the "bin_scan" table.
+							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
+							</p>
+	          </div>
+	          <table class="table table-bordered table-hover">
+	            <thead>
+	              <tr>
+	                <th>Bin</th>
+	                <th>User Id</th>
+	                <th>Last Scan</th>
+	              </tr>
+	            </thead>
+	            <tbody data-bind='foreach: items'>
+	              <tr>
+	                <td><span data-bind='text: bin'></span></td>
+	                <td><span data-bind='text: userid'></span></td>
+	                <td><span data-bind='text: last_scan'></span></td>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
+				</div>
       </div>
     </div>
 	</body>
