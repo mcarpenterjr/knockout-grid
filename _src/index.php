@@ -37,7 +37,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 				<div class="col-sm-3">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3 class="panel-title"> List controls</h3>
+							<h3 class="panel-title"> List controls (Mockup)</h3>
 						</div>
 						<div class="panel-body">
 							<button class="btn btn-primary btn-sm"><i class="fa fa-plus fa-lg"></i></button>

@@ -4,7 +4,7 @@ require  "$root/inc/dbConn.php";
 
 $db = new dbConn('devbox');
 
-$SQL = "SELECT * FROM cetec.bin_scan ORDER BY last_scan DESC LIMIT 100";
+$SQL = "SELECT * FROM cetec.bin_scan ORDER BY last_scan DESC LIMIT 1000";
 
 $data = $db->getResult($SQL);
 
