@@ -13,6 +13,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 		<!-- Styles -->
 		<link rel="stylesheet" type="text/css" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/lib/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" type="text/css" href="/lib/sweetalert/sweetalert.css" />
 		<link href="css/index.css" rel="stylesheet" type="text/css" />
 		<!-- jQuery -->
@@ -23,9 +24,9 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 		<script src="/lib/sweetalert/sweetalert.min.js"></script>
 
 		<script>
-		var curPrinter = '<?php echo $_COOKIE['vrf_printer']; ?>',
-		userName = '<?php echo $_SESSION['fullname']; ?>',
-		userID = '<?php echo $_SESSION['userid']; ?>';
+      var curPrinter = '<?php echo $_COOKIE['vrf_printer']; ?>',
+        userName = '<?php echo $_SESSION['fullname']; ?>',
+        userID = '<?php echo $_SESSION['userid']; ?>';
 		</script>
 		<!-- Our App -->
 		<script type="text/javascript" src="js/index.js"></script>
