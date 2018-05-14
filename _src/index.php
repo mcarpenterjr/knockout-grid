@@ -74,22 +74,8 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
 							</p>
 	          </div>
-	          <table class="table table-bordered table-hover">
-	            <thead>
-	              <tr>
-	                <th>Bin</th>
-	                <th>User Id</th>
-	                <th>Last Scan</th>
-	              </tr>
-	            </thead>
-	            <tbody data-bind='foreach: items'>
-	              <tr>
-	                <td><span data-bind='text: bin'></span></td>
-	                <td><span data-bind='text: userid'></span></td>
-	                <td><span data-bind='text: last_scan'></span></td>
-	              </tr>
-	            </tbody>
-	          </table>
+            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true">
+            </ko-table>
 	        </div>
 				</div>
       </div>
