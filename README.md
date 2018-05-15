@@ -54,6 +54,45 @@ data to be displayed.
       "title": "Col 1",
       "col_name": "column_1_string",
       "data_type": "string"
+    }, {
+      "title": "Col 2",
+      "col_name": "column_2",
+      "data_type": "int"
+    }, {
+      "title": "Col 3",
+      "col_name": "column_3",
+      "data_type": "mixed"
+    }
+  ],
+  "data": [
+    {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
+    }, {
+      "column_1_string": "aname",
+      "column_2": "450",
+      "column_3": "some other data"
     }
   ]
 }
