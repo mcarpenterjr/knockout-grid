@@ -47,6 +47,19 @@ header/column specifications of the table and the other node shall contain the
 data to be displayed.
 >>>
 
+#### "header"
+
+* "title"
+  * The human readable title of the column.
+* "col_name"
+  * The actual name of the column in the DB.
+* "data_type"
+  * The column data type.
+* "sort"
+  * Make this column sortable.
+* "search"
+  * Make this column searchable.
+
 ```json
 {
   "header": [
