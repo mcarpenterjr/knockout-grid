@@ -53,13 +53,11 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<h3 class="panel-title">Just a Gentle Reminder</h3>
 						</div>
 						<div class="panel-body">
-							<p>100 Records from the bin_scan table. The purpose of this
+							<p>1000 Records from the bin_scan table. The purpose of this
 							list is to show the simplicity and strength the KOjs lib offers.
 						  KO is simply iterating over json data received though an ajax request using an external php file.</p>
-							<p>KO allows us to leverage a MVC, Model View Controller design
-							application design format. Breaking our application into 3 layers,
-							a data layer (the Model), a presentation layer (the View) and a
-							"functions layer (the Controller)".</p>
+							<p>This example showcases a new method of creating custom extendable grids from JSON data. Grids are specified by Custom HTML Elements and basic functionality; themeing, serching, sorting, paging, responsiveness... are all controlled by attributes on the element.</p>
+              <p><a href="http://dev2/gitlab/mcarpenter/knockout-grid">View the README.md</a></p>
 							<p>Documentation on KO is always avaiable on the <a href="http://www.knockoutjs.com" target="_blank">knockoutJS</a> website.</p>
 						</div>
 					</div>

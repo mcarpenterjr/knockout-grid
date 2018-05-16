@@ -23,7 +23,9 @@ function magic_grid(data) {
         $.each($(el).get(0).attributes, function(i, attr) {
           options[attr.name] = attr.value;
         });
-        // console.log(options);
+        options.dom_element = el;
+        options.grid_index = idx;
+        console.log(options);
 
         ko_grid.grids.push(new Grid(options));
       });
@@ -33,6 +35,10 @@ function magic_grid(data) {
   function Grid(data) {
     var self = this;
 
+    // Root Element
+    self.dom_element = data.dom_element;
+    self.grid_index = parseInt(data.grid_index);
+
     self.id = data.id || null;
     self.source = data.source || null;
     self.fixed = data['fixed-header'] || null;
@@ -41,7 +47,7 @@ function magic_grid(data) {
     self.striped = data.striped || null;
     self.bordered = data.borders || null;
     self.template = data.theme || null;
-
+  
     // Header Data For table/grid
     self.header = ko.observableArray();
     // Body Data for table/grid
@@ -138,14 +144,26 @@ function magic_grid(data) {
       })
     };
 
+    // Make Chaining work.
+    return self;
   }
   Grid.prototype.getData = function() {
     var self = this;
     $.getJSON('php/getSampleData.php', function(data, textStatus) {
       // console.log(data);
       for (var i = 0; i < data.rows.length; i++) {
-        var row = data.rows[i];
-        self.rows.push(row);
+        var row = data.rows[i],
+         cells = [];
+
+        Object.keys(row).map(function(key) {
+          // ES6 Computed Property Name.
+          var cell = { [key]: row[key] || '' };
+          cells.push(cell);
+        });
+        row.cells = cells;
+        // console.log(Object.keys(row));
+
+        self.rows.push(new Row(row));
       }
       for (var i = 0; i < data.header.length; i++) {
         var colHeader = data.header[i];
@@ -153,6 +171,52 @@ function magic_grid(data) {
         self.header.push(new ColHeader(colHeader));
       }
     });
+
+    // Make Chaining work.
+    // return self;
+  };
+  Grid.prototype.createTable = function(callback) {
+    var self = this;
+
+    var classes = [],
+    thead = `<thead>
+              <tr data-bind="foreach: header">
+                <th data-bind="text: title"></th>
+              </tr>
+            </thead>`,
+    tbody = `<tbody data-bind="foreach: rows_sorted">
+              <tr data-bind="foreach: cell_data">
+                <td data-bind="text: $data"></td>
+              </tr>
+            </tbody>`,
+    tfoot = `<tfoot></tfoot>`;
+    
+    if (self.striped) {
+      classes.push('table-striped');
+    }
+    if (self.bordered) {
+      classes.push('table-bordered');
+    }
+    if (self.compact) {
+      classes.push('table-condensed');
+    }
+    if (self.hovered) {
+      classes.push('table-hover');
+    }
+    // have to space separate the array and then make a string.
+    classes = classes.join(' ').toString();
+
+    var table = `<table id="${self.id}" class="table ${classes}" ` +
+          ` data-bind="with: grids[${self.grid_index}]">` +
+          `${thead} ${tbody} ${tfoot}</table>`;
+    
+    $(self.dom_element).append(table);
+    if (typeof callback === 'function') {
+      callback();
+    }
+    
+    // Make Chaining work.
+    return self;
   };
 
   function ColHeader(data) {
@@ -169,6 +233,7 @@ function magic_grid(data) {
   function Row(data) {
     var self = this;
 
+    self.cell_data = ko.observableArray(data.cells);
     // Object where all our computables are stored.
     self.fm = {
       visible: ko.computed(function() {
@@ -186,4 +251,10 @@ var grid_model = new magic_grid(ko_grid);
 $(document).ready(function() {
   
   grid_model.load();
+  ko_grid.grids.forEach(function(grid) {
+    grid.createTable();
+    grid.getData();
+  });
+  
+  ko.applyBindings(ko_grid);
 });
