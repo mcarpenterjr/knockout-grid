@@ -56,8 +56,8 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<p>1000 Records from the bin_scan table. The purpose of this
 							list is to show the simplicity and strength the KOjs lib offers.
 						  KO is simply iterating over json data received though an ajax request using an external php file.</p>
-							<p>This example showcases a new method of creating custom extendable grids from JSON data. Grids are specified by Custom HTML Elements and basic functionality; themeing, serching, sorting, paging, responsiveness... are all controlled by attributes on the element.</p>
-              <p><a href="http://dev2/gitlab/mcarpenter/knockout-grid">View the README.md</a></p>
+							<p>This example showcases a new method of creating custom extendable grids from JSON data. Grids are specified by Custom HTML Elements and basic functionality; themeing, serching, sorting, paging, responsiveness... are all controlled by attributes on the element. This module creates an actual table element keeping semantics in tact.</p>
+              <p><a href="http://dev2/gitlab/mcarpenter/knockout-grid">View the README</a></p>
 							<p>Documentation on KO is always avaiable on the <a href="http://www.knockoutjs.com" target="_blank">knockoutJS</a> website.</p>
 						</div>
 					</div>

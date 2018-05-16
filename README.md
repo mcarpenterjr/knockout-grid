@@ -1,11 +1,17 @@
-# ko-table
+# WIP:ko-table
 
 >>>
 The ko-table project attempts to be a library for creating `<table></table>` from
 custom elements in the dom.
 >>>
 
+
+
 ## spec -
+
+>>>
+WIP:Not final, very incomplete.
+>>>
 
 * The element shall be specified by `ko-table`
 * Attributes shall define the properties of the table.
@@ -14,7 +20,7 @@ custom elements in the dom.
     library has been extended to accept the custom attributes.
   * [Read More...](#attributes)
 
-## attributes
+## WIP:attributes
 
 The current default set of attributes -
 
@@ -37,7 +43,16 @@ The current default set of attributes -
   * Currently `boot-strap` is the only available theme. When set the table will
     have the default classes and layout of the theme.
 
-## data structure
+## WIP:event handling
+
+Data-binding is dynamic by nature, event handling in this case has to be aware
+that data or an element may not exist at the time of handler creation. Using
+[jQuery's `.on()`](http://api.jquery.com/on/) in this case helps ease this
+proccess.
+
+## WIP:data manipulation
+
+## WIP:data structure
 
 ### JSON
 

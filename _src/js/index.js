@@ -52,6 +52,7 @@ function magic_grid(data) {
     self.header = ko.observableArray();
     // Body Data for table/grid
     self.rows = ko.observableArray();
+
     /**8                     DATA MODIFIERS                     8**/
     /*                                                            */
     /* NOTE: Data modifiers are flags that indicate if an action  */
@@ -65,6 +66,7 @@ function magic_grid(data) {
     /* activley being retreived.                                  */
     /*                                                            */
     /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
     self.dataMods = {
       sortTog: ko.observable(false),
       sortDef: ko.observable(false),
@@ -157,7 +159,10 @@ function magic_grid(data) {
 
         Object.keys(row).map(function(key) {
           // ES6 Computed Property Name.
-          var cell = { [key]: row[key] || '' };
+          var cell = {
+            'key': [key] || '',
+            'value': row[key] || ''
+          };
           cells.push(cell);
         });
         row.cells = cells;
@@ -186,10 +191,34 @@ function magic_grid(data) {
             </thead>`,
     tbody = `<tbody data-bind="foreach: rows_sorted">
               <tr data-bind="foreach: cell_data">
-                <td data-bind="text: $data"></td>
+                <td data-bind="text: $data.value"></td>
               </tr>
             </tbody>`,
-    tfoot = `<tfoot></tfoot>`;
+    tfoot = `<tfoot>
+              <tr>
+                <td data-bind="attr: {
+                  colspan: header().length
+                }" style="text-align: center;">
+                <ul class="pagination" >
+                  <li class="disabled">
+                    <a href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <!-- ko foreach: paginated.totalPages -->
+                    <li>
+                      <a href="#" data-bind="text: page"></a>
+                    </li>
+                  <!-- /ko -->
+                  <li>
+                    <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+              </ul>
+                </td>
+              </tr>
+            </tfoot>`;
     
     if (self.striped) {
       classes.push('table-striped');
@@ -210,7 +239,11 @@ function magic_grid(data) {
           ` data-bind="with: grids[${self.grid_index}]">` +
           `${thead} ${tbody} ${tfoot}</table>`;
     
-    $(self.dom_element).append(table);
+    // Could be append to keep Custom Element Wrapper.
+    // Incases where bootstrap is used as the theme,
+    // we're going to replace the element, so we do not interfere,
+    // with styling.
+    $(self.dom_element).replaceWith(table);
     if (typeof callback === 'function') {
       callback();
     }
