@@ -1,6 +1,7 @@
 function grid_data() {
   var self = this;
   self.grids = [];
+  self.gridUIDS = {};
 }
 var ko_grid = new grid_data();
 
@@ -39,7 +40,7 @@ function magic_grid(data) {
     self.dom_element = data.dom_element;
     self.grid_index = parseInt(data.grid_index);
 
-    self.id = data.id || null;
+    self.id = data.id || self.getUID();
     self.source = data.source || null;
     self.fixed = data['fixed-header'] || null;
     self.hover = data.hover || null;
@@ -200,17 +201,19 @@ function magic_grid(data) {
                   colspan: header().length
                 }" style="text-align: center;">
                 <ul class="pagination" >
-                  <li class="disabled">
+                  <li page-number="previous" class="disabled">
                     <a href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
                   <!-- ko foreach: paginated.totalPages -->
-                    <li>
-                      <a href="#" data-bind="text: page"></a>
+                    <li data-bind="attr: {
+                      'page-number': page
+                    }">
+                      <a data-bind="text: page"></a>
                     </li>
                   <!-- /ko -->
-                  <li>
+                  <li page-number="next">
                     <a href="#" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
@@ -235,9 +238,11 @@ function magic_grid(data) {
     // have to space separate the array and then make a string.
     classes = classes.join(' ').toString();
 
-    var table = `<table id="${self.id}" class="table ${classes}" ` +
-          ` data-bind="with: grids[${self.grid_index}]">` +
-          `${thead} ${tbody} ${tfoot}</table>`;
+    var table = `<table id="${self.id}"
+      class="table ${classes}"
+      data-bind="with: grids[${self.grid_index}]">
+      ${thead} ${tbody} ${tfoot}
+    </table>`;
     
     // Could be append to keep Custom Element Wrapper.
     // Incases where bootstrap is used as the theme,
@@ -250,6 +255,26 @@ function magic_grid(data) {
     
     // Make Chaining work.
     return self;
+  };
+  Grid.prototype.getUID = function() {
+    // Inspired by this SOF answer https://stackoverflow.com/a/6248722/5063323
+    while (true) {
+      var uid = ("000000" + ((Math.random() * Math.pow(36, 6)) | 0).toString(36)).slice(-6);
+      if (!ko_grid.gridUIDS.hasOwnProperty(uid)) {
+        ko_grid.gridUIDS[uid] = true;
+        return uid;
+      }
+    }
+  };
+  Grid.prototype.loadEvents = function() {
+    var self = this;
+    // Paging event Handlers.
+    $('#' + self.id).on('click', 'ul.pagination li', function(ev) {
+      var pn = $(this).attr('page-number');
+      $(this).siblings().removeClass('active');
+      $(this).addClass('active');
+      self.paginated.selectedPage(pn);
+    });
   };
 
   function ColHeader(data) {
@@ -285,7 +310,7 @@ $(document).ready(function() {
   
   grid_model.load();
   ko_grid.grids.forEach(function(grid) {
-    grid.createTable().getData();
+    grid.createTable().getData().loadEvents();
   });
   
   ko.applyBindings(ko_grid);
