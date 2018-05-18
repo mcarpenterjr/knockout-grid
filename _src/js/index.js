@@ -202,7 +202,7 @@ function magic_grid(data) {
                 }" style="text-align: center;">
                 <ul class="pagination" >
                   <li page-number="previous" class="disabled">
-                    <a href="#" aria-label="Previous">
+                    <a aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
@@ -214,7 +214,7 @@ function magic_grid(data) {
                     </li>
                   <!-- /ko -->
                   <li page-number="next">
-                    <a href="#" aria-label="Next">
+                    <a aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
                   </li>
@@ -268,12 +268,40 @@ function magic_grid(data) {
   };
   Grid.prototype.loadEvents = function() {
     var self = this;
+
+    var tuid = '#' + self.id;
     // Paging event Handlers.
-    $('#' + self.id).on('click', 'ul.pagination li', function(ev) {
-      var pn = $(this).attr('page-number');
-      $(this).siblings().removeClass('active');
-      $(this).addClass('active');
-      self.paginated.selectedPage(pn);
+    $(tuid).on('click', 'ul.pagination li', function(ev) {
+      var pn = $(this).attr('page-number'),
+        spn = self.paginated.selectedPage(),
+        tp = self.paginated.totalPages().length;
+      
+      if (pn == 'next' || pn == 'previous') {
+        var npn = pn == 'next' ? ++spn : pn == 'previous' ? --spn : null;
+        // console.log(npn);
+        if (npn >= 1 && npn <= tp) {
+          // Clear the active class from all pagers
+          $(this).siblings().removeClass('active');
+          $(this).removeClass('active');
+          $(this).siblings('[page-number="previous"]').removeClass('disabled');
+          $(this).siblings('[page-number="next"]').removeClass('disabled');
+          $(this).siblings("[page-number='" + npn + "']").addClass('active');
+          self.paginated.selectedPage(npn);
+          if (npn == 1) {
+            // console.log('BOTTOM');
+            $(this).addClass('disabled');
+          }
+          if (npn == 10) {
+            // console.log('TOP');
+            $(this).addClass('disabled');
+          }
+        }
+      }
+      else {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        self.paginated.selectedPage(pn);
+      }
     });
   };
 
