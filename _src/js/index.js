@@ -62,7 +62,7 @@ function magic_grid(data) {
     /* data.                                                      */
     /* @sortDef - Indicates if the default sort is active on the  */
     /* data.                                                      */
-    /* @scarping - Indicates if data is being refreshed or        */
+    /* @scraping - Indicates if data is being refreshed or        */
     /* activley being retreived.                                  */
     /*                                                            */
     /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -147,7 +147,7 @@ function magic_grid(data) {
     };
 
     // Make Chaining work.
-    return self;
+    return this;
   }
   Grid.prototype.getData = function() {
     var self = this;
@@ -178,7 +178,7 @@ function magic_grid(data) {
     });
 
     // Make Chaining work.
-    // return self;
+    return this;
   };
   Grid.prototype.createTable = function(callback) {
     var self = this;
@@ -285,8 +285,7 @@ $(document).ready(function() {
   
   grid_model.load();
   ko_grid.grids.forEach(function(grid) {
-    grid.createTable();
-    grid.getData();
+    grid.createTable().getData();
   });
   
   ko.applyBindings(ko_grid);
