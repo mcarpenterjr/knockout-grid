@@ -5,8 +5,6 @@ The ko-table project attempts to be a library for creating `<table></table>` fro
 custom elements in the dom.
 >>>
 
-
-
 ## spec -
 
 >>>
@@ -19,6 +17,12 @@ WIP:Not final, very incomplete.
   * Custom attributes shall be allowed only if the instance of the `ko-table`
     library has been extended to accept the custom attributes.
   * [Read More...](#attributes)
+* The table element should silently update it's presntation when the data model
+  Only when the user or developer chooses should the table alert to data model
+  changes.
+* Accessing data presented by the table should maintain the same relationships
+  of the data model. No special method should be required to Retreive or Update
+  data. Element attributes should be leveraged here.
 
 ## WIP:attributes
 
