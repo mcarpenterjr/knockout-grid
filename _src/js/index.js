@@ -40,7 +40,7 @@ function magic_grid(data) {
   };
 
   self.loadModal = function() {
-    var self = this;
+    // var self = this;
     
     /**8                 Bootstrap Modal Events                 8**/
     /*                                                            */
@@ -78,12 +78,33 @@ function magic_grid(data) {
     }).on('click', 'button.remove-filter', function(e) {
       console.log('Remove Filter');
     }).on('show.bs.modal', function(e) {
+      $('select.filter-type', this).hide();
+      $('input.filter-term', this).hide();
       console.log('Showing Modal');
     }).on('shown.bs.modal', function(e) {
-      console.log('Modal Shown');        
+      var grid_id = $(this).data('grid_id'),
+        grid = ko_grid.grids.find(function(grid) {
+          return grid.id == grid_id;
+        });
+
+        $('select.filter-column', this).append(
+          '<option value="">Select Column...</option>'
+        )
+        for (let i = 0; i < grid.header().length; i++) {
+          const column = grid.header()[i];
+          
+          $('select.filter-column', this).append(
+            '<option value="' + column.col_name() + '">' +
+              column.title() +
+            '</option>'
+          );
+        }
+      
+      console.log('Modal Shown', $('select.filter-column', this));
     }).on('hide.bs.modal', function(e) {
       console.log('Hiding Modal');
     }).on('hidden.bs.modal', function(e) {
+      $(this).unbind();
       console.log('Modal Hidden');        
     });
   };
@@ -104,6 +125,7 @@ function magic_grid(data) {
     self.bordered = data.borders || null;
     self.template = data.theme || null;
     self.filterable = data.filterable || null;
+    self.paging = data.paging || null;
   
     // Header Data For table/grid
     self.header = ko.observableArray();
@@ -250,6 +272,41 @@ function magic_grid(data) {
       </tr>`;
     }
 
+    if (self.paging) {
+      // <div class="form-group col-xs-2">
+      //   <label class="col-xs-2 control-label">Page: </label>
+      //   <select class="form-control col-xs-6" data-bind="
+      //     value: paginated.selectedPage()
+      //   ">
+      //   </select>
+      // </div>
+      var paging = `<tr>
+        <td data-bind="attr: {
+          colspan: header().length
+        }" style="text-align: center;">
+          <ul class="pagination" >
+            <li page-number="previous" class="disabled">
+              <a aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <!-- ko foreach: paginated.totalPages -->
+              <li data-bind="attr: {
+                'page-number': page
+              }">
+                <a data-bind="text: page"></a>
+              </li>
+            <!-- /ko -->
+            <li page-number="next">
+              <a aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </td>
+      </tr>`;
+    }
+
     var classes = [],
     thead = `<thead>
               ${filter}
@@ -263,31 +320,7 @@ function magic_grid(data) {
               </tr>
             </tbody>`,
     tfoot = `<tfoot>
-              <tr>
-                <td data-bind="attr: {
-                  colspan: header().length
-                }" style="text-align: center;">
-                <ul class="pagination" >
-                  <li page-number="previous" class="disabled">
-                    <a aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <!-- ko foreach: paginated.totalPages -->
-                    <li data-bind="attr: {
-                      'page-number': page
-                    }">
-                      <a data-bind="text: page"></a>
-                    </li>
-                  <!-- /ko -->
-                  <li page-number="next">
-                    <a aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-              </ul>
-                </td>
-              </tr>
+              ${paging}
             </tfoot>`;
     
     if (self.striped) {
@@ -372,6 +405,7 @@ function magic_grid(data) {
     });
 
     $(tuid).on('click', 'button.filter', function(ev) {
+      $('div#filter-modal').data('grid_id', self.id);
       $('div#filter-modal').modal('show');
     });
   };
