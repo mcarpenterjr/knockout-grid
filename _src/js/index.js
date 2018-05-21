@@ -10,10 +10,9 @@ function magic_grid(data) {
   // console.log(data);
   self.items = ko.observableArray(data.items);
   
-  self.load = function() {
-    var self = this;
-    
-    var koGrids = $('ko-table');
+  self.load = function() {    
+    var koGrids = $('ko-table'),
+      filterModal = $('body').has('div#filter-modal');
 
     if (koGrids.length > 0) {
       $(koGrids).each(function(idx, el) {
@@ -31,6 +30,62 @@ function magic_grid(data) {
         ko_grid.grids.push(new Grid(options));
       });
     }
+
+    if (filterModal.length <= 0) {
+      $.get('templates/modal.html', function(data) {
+        $('body').append(data);
+        self.loadModal();
+      });
+    }
+  };
+
+  self.loadModal = function() {
+    var self = this;
+    
+    /**8                 Bootstrap Modal Events                 8**/
+    /*                                                            */
+    /* @show.bs.modal - This event fires immediately when the     */
+    /* show instance method is called. If caused by a click, the  */
+    /* clicked element is available as the relatedTarget property */
+    /* of the event.                                              */
+    /*                                                            */
+    /* @shown.bs.modal - This event is fired when the modal has   */
+    /* been made visible to the user (will wait for CSS           */
+    /* transitions to complete). If caused by a click, the clicked*/
+    /* element is available as the relatedTarget property of the  */
+    /* event.                                                     */
+    /*                                                            */
+    /* @hide.bs.modal - This event is fired immediately when      */
+    /* the hide instance method has been called.                  */
+    /*                                                            */
+    /* @hidden.bs.modal - This event is fired when the modal has  */
+    /* finished being hidden from the user (will wait for CSS     */
+    /* transitions to complete).                                  */
+    /*                                                            */
+    /* @loaded.bs.modal - This event is fired when the modal has  */
+    /* loaded content using the remote option.                    */
+    /*                                                            */
+    /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+    
+    $('div#filter-modal').modal({
+      backdrop: true,
+      keyboard: true,
+      show: false
+    }).on('click', 'button.add-filter', function(e) {
+      console.log('Add Filter');
+    }).on('click', 'button.add-filter-next', function(e) {
+      console.log('Add Filter Next');        
+    }).on('click', 'button.remove-filter', function(e) {
+      console.log('Remove Filter');
+    }).on('show.bs.modal', function(e) {
+      console.log('Showing Modal');
+    }).on('shown.bs.modal', function(e) {
+      console.log('Modal Shown');        
+    }).on('hide.bs.modal', function(e) {
+      console.log('Hiding Modal');
+    }).on('hidden.bs.modal', function(e) {
+      console.log('Modal Hidden');        
+    });
   };
 
   function Grid(data) {
@@ -48,6 +103,7 @@ function magic_grid(data) {
     self.striped = data.striped || null;
     self.bordered = data.borders || null;
     self.template = data.theme || null;
+    self.filterable = data.filterable || null;
   
     // Header Data For table/grid
     self.header = ko.observableArray();
@@ -184,8 +240,19 @@ function magic_grid(data) {
   Grid.prototype.createTable = function(callback) {
     var self = this;
 
+    if (self.filterable) {
+      var filter = `<tr>
+        <td  data-bind="colspan: header().length">
+          <button class="btn btn-primary btn-xs filter">Search 
+            <i class="fa fa-search"></i>
+          </button>
+        </td>
+      </tr>`;
+    }
+
     var classes = [],
     thead = `<thead>
+              ${filter}
               <tr data-bind="foreach: header">
                 <th data-bind="text: title"></th>
               </tr>
@@ -303,6 +370,72 @@ function magic_grid(data) {
         self.paginated.selectedPage(pn);
       }
     });
+
+    $(tuid).on('click', 'button.filter', function(ev) {
+      $('div#filter-modal').modal('show');
+    });
+  };
+  Grid.prototype.makeFilter = function(filter) {
+    return function(item) {
+      const t = filter.typeR(),
+        tm = filter.term(),
+        col = filter.column();
+      var val;
+
+      if (typeof item[col] === "function") {
+        val = parseInt(item[col]()) ? parseInt(item[col]()): item[col]();
+      }
+
+      if (t == 'eq') {
+        // Equals
+        return val ==  tm;
+      }
+      else if (t == 'ne') {
+        // Not Equals
+        return val !=  tm;
+      }
+      else if (t == 'lt') {
+        // Less Than
+        return val < tm;
+      }
+      else if (t == 'le') {
+        // Less Than or Equal
+        return val <= tm;
+      }
+      else if (t == 'gt') {
+        // Greater Than
+        return val > tm;
+      }
+      else if (t == 'ge') {
+        // Greater Than or Equals
+        return val >= tm;
+      }
+      else if (t == 'bw') {
+        // Begins With
+        return val.startsWith(tm);
+      }
+      else if (t == 'bn') {
+        // Does Not Begin With
+        return val.startsWith(tm);
+      }
+      else if (t == 'ew') {
+        // Ends With
+        return val.endsWith(tm);
+      }
+      else if (t == 'en') {
+        // Does Not End With
+        return val.endsWith(tm);
+      }
+      else if (t == 'cn') {
+        // Contains
+        return val.includes(tm);
+      }
+      else if (t == 'ce') {
+        // Does Not Contain
+        return val.includes(tm);
+      }
+      console.log(filter);
+    };
   };
 
   function ColHeader(data) {
@@ -313,6 +446,38 @@ function magic_grid(data) {
     self.type = ko.observable(data.data_type);
     self.sort = ko.observable(data.sort);
     self.search = ko.observable(data.search);
+
+    self.searchMethods = ko.computed(function() {
+      // Returns all the available methods for filtering.
+      var methods_string = [
+        'bw', // Begins With
+        'bn', // Does Not Begin With
+        'ew', // Ends With
+        'en', // Does Not End With
+        'cn', // Contains
+        'ce' // Does Not Contain
+      ],
+        methods_int = [
+        'eq', // Equals
+        'ne', // Not Equal
+        'lt', // Less Than
+        'le', // Less Than or Equals
+        'gt', // Greater Than
+        'ge' // Greater Than or Equal
+      ];
+
+      if (self.search() == true) {
+        if (self.type() == 'string') {
+          return methods_string;
+        }
+        else if (self.type() == 'numeric') {
+          return methods_int;
+        }
+        else {
+          return methods_string.concat(methods_int);
+        }
+      }
+    });
 
   }
 
