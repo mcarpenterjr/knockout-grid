@@ -25,9 +25,10 @@ function magic_grid(data) {
         });
         options.dom_element = el;
         options.grid_index = idx;
-        console.log(options);
+        // console.log(options);
 
-        ko_grid.grids.push(new Grid(options));
+        ko_grid.grids.splice(idx, 0, new Grid(options));
+        // .push(new Grid(options));
       });
     }
 
@@ -66,6 +67,9 @@ function magic_grid(data) {
     /* loaded content using the remote option.                    */
     /*                                                            */
     /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
+    // Create an observable for tracking the target grid for the modal.
+    ko_grid.tarGrid = ko.observable();
     
     $('div#filter-modal').modal({
       backdrop: true,
@@ -80,32 +84,36 @@ function magic_grid(data) {
     }).on('show.bs.modal', function(e) {
       $('select.filter-type', this).hide();
       $('input.filter-term', this).hide();
-      console.log('Showing Modal');
+      // console.log('Showing Modal');
     }).on('shown.bs.modal', function(e) {
-      var grid_id = $(this).data('grid_id'),
-        grid = ko_grid.grids.find(function(grid) {
-          return grid.id == grid_id;
-        });
-
-        $('select.filter-column', this).append(
-          '<option value="">Select Column...</option>'
-        )
-        for (let i = 0; i < grid.header().length; i++) {
-          const column = grid.header()[i];
-          
-          $('select.filter-column', this).append(
-            '<option value="' + column.col_name() + '">' +
-              column.title() +
-            '</option>'
-          );
-        }
+      var gridIDX = $(this).data('grid_idx');
+      console.log(gridIDX);
+      ko_grid.tarGrid(gridIDX);
       
-      console.log('Modal Shown', $('select.filter-column', this));
+      // var grid_id = $(this).data('grid_id'),
+      //   grid = ko_grid.grids.find(function(grid) {
+      //     return grid.id == grid_id;
+      //   });
+
+      //   $('select.filter-column', this).append(
+      //     '<option value="">Select Column...</option>'
+      //   );
+      //   for (let i = 0; i < grid.header().length; i++) {
+      //     const column = grid.header()[i];
+          
+      //     $('select.filter-column', this).append(
+      //       '<option value="' + column.col_name() + '">' +
+      //         column.title() +
+      //       '</option>'
+      //     );
+      //   }
+      
+      // console.log('Modal Shown', $('select.filter-column', this));
     }).on('hide.bs.modal', function(e) {
-      console.log('Hiding Modal');
+      // console.log('Hiding Modal');
     }).on('hidden.bs.modal', function(e) {
       $(this).unbind();
-      console.log('Modal Hidden');        
+      // console.log('Modal Hidden');
     });
   };
 
@@ -406,6 +414,7 @@ function magic_grid(data) {
 
     $(tuid).on('click', 'button.filter', function(ev) {
       $('div#filter-modal').data('grid_id', self.id);
+      $('div#filter-modal').data('grid_idx', self.grid_index);
       $('div#filter-modal').modal('show');
     });
   };

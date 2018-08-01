@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i></button>
         <h4 class="modal-title">Filters</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" data-bind="with: grids[tarGrid()]">
         <table class="table table-condensed">
           <thead>
             <tr>
@@ -28,14 +28,13 @@
                 <button class="btn btn-xs btn-primary remove-filter"><i class="fa fa-minus fa-lg"></i></button>
               </td>
               <td>
-                <select class="form-control filter-column">
-                  
-                </select>
+                <select class="form-control filter-column" data-bind="options: header,
+                  optionsText: 'title',
+                  optionsValue: 'col_name',
+                optionsCaption: 'Select A Column...'"></select>
               </td>
               <td>
-                <select class="form-control filter-type">
-                  
-                </select>
+                <select class="form-control filter-type" data-bind="options: "></select>
               </td>
               <td>
                 <input type="text" class="form-control filter-term" placeholder="Term...">

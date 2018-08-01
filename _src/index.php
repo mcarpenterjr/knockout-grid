@@ -74,12 +74,6 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 	          </div>
             <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
             </ko-table>
-            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
-            </ko-table>
-            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
-            </ko-table>
-            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
-            </ko-table>
 	        </div>
 				</div>
       </div>
