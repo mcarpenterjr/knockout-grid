@@ -74,7 +74,43 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 	          </div>
             <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
             </ko-table>
-	        </div>
+          </div>
+          <div class="panel panel-default">
+	          <div class="panel-heading">
+	            <h3 class="panel-title">KO Grid Sample</h3>
+	          </div>
+	          <div class="panel-body">
+							<p>100 records from the "bin_scan" table.
+							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
+							</p>
+	          </div>
+            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
+            </ko-table>
+          </div>
+          <div class="panel panel-default">
+	          <div class="panel-heading">
+	            <h3 class="panel-title">KO Grid Sample</h3>
+	          </div>
+	          <div class="panel-body">
+							<p>100 records from the "bin_scan" table.
+							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
+							</p>
+	          </div>
+            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
+            </ko-table>
+          </div>
+          <div class="panel panel-default">
+	          <div class="panel-heading">
+	            <h3 class="panel-title">KO Grid Sample</h3>
+	          </div>
+	          <div class="panel-body">
+							<p>100 records from the "bin_scan" table.
+							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
+							</p>
+	          </div>
+            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
+            </ko-table>
+          </div>
 				</div>
       </div>
     </div>

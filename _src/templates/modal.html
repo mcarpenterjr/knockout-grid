@@ -9,35 +9,41 @@
         <table class="table table-condensed">
           <thead>
             <tr>
-              <td></td>
-              <td>
+              <th></th>
+              <th>
                 Column
-              </td>
-              <td>
+              </th>
+              <th>
                 Type
-              </td>
-              <td>
+              </th>
+              <th>
                 Term
-              </td>
-              <td></td>
+              </th>
+              <th></th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
+          <tbody data-bind="foreach: filters">
+            <tr data-bind="attr: {
+              'index': $index
+            }">
               <td style="vertical-align: middle;">
                 <button class="btn btn-xs btn-primary remove-filter"><i class="fa fa-minus fa-lg"></i></button>
               </td>
               <td>
-                <select class="form-control filter-column" data-bind="options: header,
+                <select class="form-control filter-column" data-bind="options: $parent.header,
                   optionsText: 'title',
                   optionsValue: 'col_name',
-                optionsCaption: 'Select A Column...'"></select>
+                  optionsCaption: 'Select A Column...',
+                  value: column"></select>
               </td>
               <td>
-                <select class="form-control filter-type" data-bind="options: "></select>
+                <select class="form-control filter-type" 
+                  data-bind="options: methods,
+                  value: typeR
+                  "></select>
               </td>
               <td>
-                <input type="text" class="form-control filter-term" placeholder="Term...">
+                <input type="text" class="form-control filter-term" placeholder="Term..." data-bind="value: term">
               </td>
               <td style="vertical-align: middle;">
                 <button class="btn btn-xs btn-primary add-filter-next"><i class="fa fa-plus fa-lg"></i></button>

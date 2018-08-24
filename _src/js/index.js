@@ -76,19 +76,28 @@ function magic_grid(data) {
       keyboard: true,
       show: false
     }).on('click', 'button.add-filter', function(e) {
-      console.log('Add Filter');
+      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
+
+      ko_grid.grids[gridIDX].filters.push(new TableFilter());
     }).on('click', 'button.add-filter-next', function(e) {
-      console.log('Add Filter Next');        
+      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
+      var index = $(this).closest('tr').attr('index'),
+        idx = parseInt(parseInt(index) + 1);
+
+      ko_grid.grids[gridIDX].filters.splice(idx, 0, new TableFilter());
     }).on('click', 'button.remove-filter', function(e) {
-      console.log('Remove Filter');
+      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
+      var idx = $(this).closest('tr').attr('index');
+
+      ko_grid.grids[gridIDX].filters.splice(idx, 1);
     }).on('show.bs.modal', function(e) {
       $('select.filter-type', this).hide();
       $('input.filter-term', this).hide();
       // console.log('Showing Modal');
     }).on('shown.bs.modal', function(e) {
       var gridIDX = $(this).data('grid_idx');
-      console.log(gridIDX);
       ko_grid.tarGrid(gridIDX);
+      console.log(ko_grid.tarGrid());
       
       // var grid_id = $(this).data('grid_id'),
       //   grid = ko_grid.grids.find(function(grid) {
@@ -110,11 +119,14 @@ function magic_grid(data) {
       
       // console.log('Modal Shown', $('select.filter-column', this));
     }).on('hide.bs.modal', function(e) {
-      // console.log('Hiding Modal');
+
+      console.log('Hiding Modal');
     }).on('hidden.bs.modal', function(e) {
-      $(this).unbind();
-      // console.log('Modal Hidden');
+      $('div#filter-modal').removeData('grid_id');
+      $('div#filter-modal').removeData('grid_idx');
+      console.log('Modal Hidden');
     });
+    ko.applyBindings(ko_grid, $('#filter-modal')[0]);
   };
 
   function Grid(data) {
@@ -181,9 +193,8 @@ function magic_grid(data) {
       if (filts.length > 0) {
         for (var i = 0; i < filts.length; i++) {
           var filter = filts[i];
-          a = a.filter(app.makeFilter(filter));
+          a = a.filter(self.makeFilter(filter));
         }
-        console.log(a);
       }
 
       var start = parseInt((sp - 1) * spp),
@@ -413,22 +424,27 @@ function magic_grid(data) {
     });
 
     $(tuid).on('click', 'button.filter', function(ev) {
+      console.log(self.id, self.grid_index);
       $('div#filter-modal').data('grid_id', self.id);
       $('div#filter-modal').data('grid_idx', self.grid_index);
       $('div#filter-modal').modal('show');
     });
   };
   Grid.prototype.makeFilter = function(filter) {
-    return function(item) {
+    return function(row) {
       const t = filter.typeR(),
         tm = filter.term(),
-        col = filter.column();
+        col = filter.column(),
+        item = row.cell_data();
       var val;
 
+      console.log(item.key);
       if (typeof item[col] === "function") {
-        val = parseInt(item[col]()) ? parseInt(item[col]()): item[col]();
+        val = parseInt(item[col]()) || item[col]();
       }
-
+      else {
+        val = item[col];
+      }
       if (t == 'eq') {
         // Equals
         return val ==  tm;
@@ -477,9 +493,27 @@ function magic_grid(data) {
         // Does Not Contain
         return val.includes(tm);
       }
-      console.log(filter);
     };
   };
+
+  function TableFilter(filt) {
+    // Filter Object
+    var self = this;
+
+    self.column = ko.observable();
+    self.typeR = ko.observable();
+    self.term = ko.observable('');
+
+    self.methods = ko.computed(function() {
+      if (typeof self.column() != 'undefined' && self.column()) {
+        var cur_col = ko_grid.grids[ko_grid.tarGrid()].header().find(function(el) {
+          return el.col_name() == self.column();
+        });
+        return cur_col.searchMethods();
+      }
+    });
+    console.log(self.methods);
+  }
 
   function ColHeader(data) {
     var self = this;
@@ -548,6 +582,5 @@ $(document).ready(function() {
   ko_grid.grids.forEach(function(grid) {
     grid.createTable().getData().loadEvents();
   });
-  
   ko.applyBindings(ko_grid);
 });
