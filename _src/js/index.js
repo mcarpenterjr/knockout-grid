@@ -195,6 +195,9 @@ function magic_grid(data) {
           var filter = filts[i];
           a = a.filter(self.makeFilter(filter));
         }
+        // We could do some list length checking here, and alert the user
+        // the terms defined are returning no results. We could also mute the
+        // filters and just show the entire list.
       }
 
       var start = parseInt((sp - 1) * spp),
@@ -258,7 +261,7 @@ function magic_grid(data) {
         Object.keys(row).map(function(key) {
           // ES6 Computed Property Name.
           var cell = {
-            'key': [key] || '',
+            'key': key || '',
             'value': row[key] || ''
           };
           cells.push(cell);
@@ -329,13 +332,17 @@ function magic_grid(data) {
     var classes = [],
     thead = `<thead>
               ${filter}
-              <tr data-bind="foreach: header">
+              <tr class="sticky" data-bind="foreach: header">
                 <th data-bind="text: title"></th>
               </tr>
             </thead>`,
     tbody = `<tbody data-bind="foreach: rows_sorted">
               <tr data-bind="foreach: cell_data">
-                <td data-bind="text: $data.value"></td>
+                <td data-bind="text: $data.value,
+                  attr: {
+                    key: $data.key
+                  }
+                "></td>
               </tr>
             </tbody>`,
     tfoot = `<tfoot>
@@ -432,18 +439,19 @@ function magic_grid(data) {
   };
   Grid.prototype.makeFilter = function(filter) {
     return function(row) {
-      const t = filter.typeR(),
-        tm = filter.term(),
-        col = filter.column(),
-        item = row.cell_data();
+      const t = filter.typeR() || '',
+        tm = filter.term() || '', 
+        col = filter.column() || '',
+        item = row.cell_data().find((item) => {
+          return item.key == col;
+        }) || '';
       var val;
 
-      console.log(item.key);
-      if (typeof item[col] === "function") {
-        val = parseInt(item[col]()) || item[col]();
+      if (typeof item.value === "function") {
+        val = parseInt(item.value()) || item.value();
       }
       else {
-        val = item[col];
+        val = item.value;
       }
       if (t == 'eq') {
         // Equals
@@ -512,7 +520,6 @@ function magic_grid(data) {
         return cur_col.searchMethods();
       }
     });
-    console.log(self.methods);
   }
 
   function ColHeader(data) {
