@@ -16,14 +16,14 @@ thead tr.sticky th {
   position: sticky;
   top: -1px;
   background: #fff;
-  background-clip: padding-box;
+  /* background-clip: padding-box; */
 }
 
 tfoot tr.sticky td {
   position: sticky;
   bottom: 0px;
   background: #fff;
-  background-clip: padding-box;
+  /* background-clip: padding-box; */
 }
 
 .container-fluid {
