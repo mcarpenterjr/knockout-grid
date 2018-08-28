@@ -5,15 +5,21 @@ require  "$root/inc/dbConn.php";
 $db = new dbConn('devbox');
 
 $SQL = "SELECT
-          bin,
-          userid,
-          last_scan
+          reportID,
+          testID,
+          eventDateTime,
+          userID,
+          eventType,
+          workstation,
+          note
         FROM
-          cetec.bin_scan
+          cetec.testtracker_event
+        WHERE
+          userID IS NOT NULL
         ORDER BY
-          last_scan
+          eventDateTime
         DESC LIMIT
-          1000";
+          100";
 
 $data = $db->getResult($SQL);
 $output['rows'] = $data;
@@ -26,26 +32,54 @@ $output['rows'] = $data;
 
 $output['header'] = array();
 
-$bin['title'] = "Bin";
-$bin['data_type'] = "mixed";
-$bin['sort'] = true;
-$bin['search'] = true;
-$bin['col_name'] = "bin";
-array_push($output['header'], $bin);
+$report['title'] = "Report ID";
+$report['data_type'] = "mixed";
+$report['sort'] = true;
+$report['search'] = true;
+$report['col_name'] = "reportID";
+array_push($output['header'], $report);
+
+$test['title'] = "Test ID";
+$test['data_type'] = "mixed";
+$test['sort'] = true;
+$test['search'] = true;
+$test['col_name'] = "testID";
+array_push($output['header'], $test);
+
+$date['title'] = "Date";
+$date['data_type'] = "date";
+$date['sort'] = true;
+$date['search'] = true;
+$date['col_name'] = "eventDateTime";
+array_push($output['header'], $date);
 
 $user['title'] = "User";
 $user['data_type'] = "string";
 $user['sort'] = true;
 $user['search'] = true;
-$user['col_name'] = "userid";
+$user['col_name'] = "userID";
 array_push($output['header'], $user);
 
-$scan['title'] = "Last Scanned";
-$scan['data_type'] = "date";
-$scan['sort'] = true;
-$scan['search'] = true;
-$scan['col_name'] = "last_scan";
-array_push($output['header'], $scan);
+$event['title'] = "Event";
+$event['data_type'] = "mixed";
+$event['sort'] = true;
+$event['search'] = true;
+$event['col_name'] = "eventType";
+array_push($output['header'], $event);
+
+$workstation['title'] = "Workstation";
+$workstation['data_type'] = "mixed";
+$workstation['sort'] = true;
+$workstation['search'] = true;
+$workstation['col_name'] = "workstation";
+array_push($output['header'], $workstation);
+
+$note['title'] = "Notes";
+$note['data_type'] = "mixed";
+$note['sort'] = true;
+$note['search'] = true;
+$note['col_name'] = "note";
+array_push($output['header'], $note);
 
 // We expect JSON
 echo json_encode($output);

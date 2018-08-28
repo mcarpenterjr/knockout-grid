@@ -319,7 +319,7 @@ function magic_grid(data) {
       //   ">
       //   </select>
       // </div>
-      var paging = `<tr>
+      var paging = `<tr class="sticky">
         <td data-bind="attr: {
           colspan: header().length
         }" style="text-align: center;">
@@ -593,7 +593,6 @@ function magic_grid(data) {
               return item.key == filt.col;
             }) || "0";
           }
-          console.log(colA, colB);
           var aa = chunkify(colA.value.toString().toLowerCase());
           var bb = chunkify(colB.value.toString().toLowerCase());
           for (x = 0; aa[x] && bb[x]; x++) {
