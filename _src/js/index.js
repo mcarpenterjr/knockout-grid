@@ -9,14 +9,13 @@ function magic_grid(data) {
   var self = this;
   // console.log(data);
   self.items = ko.observableArray(data.items);
-  
-  self.load = function() {    
-    var koGrids = $('ko-table'),
-      filterModal = $('body').has('div#filter-modal');
+
+  self.load = function() {
+    var koGrids = $("ko-table"),
+      filterModal = $("body").has("div#filter-modal");
 
     if (koGrids.length > 0) {
       $(koGrids).each(function(idx, el) {
-
         // MIND BLOWN -
         // http://www.purplesquirrels.com.au/2013/04/getting-all-element-attribute-values-with-jquery/
         options = [];
@@ -25,7 +24,7 @@ function magic_grid(data) {
         });
         options.dom_element = el;
         options.grid_index = idx;
-        // console.log(options);
+        console.log(options);
 
         ko_grid.grids.splice(idx, 0, new Grid(options));
         // .push(new Grid(options));
@@ -33,8 +32,8 @@ function magic_grid(data) {
     }
 
     if (filterModal.length <= 0) {
-      $.get('templates/modal.html', function(data) {
-        $('body').append(data);
+      $.get("templates/modal.html", function(data) {
+        $("body").append(data);
         self.loadModal();
       });
     }
@@ -42,7 +41,7 @@ function magic_grid(data) {
 
   self.loadModal = function() {
     // var self = this;
-    
+
     /**8                 Bootstrap Modal Events                 8**/
     /*                                                            */
     /* @show.bs.modal - This event fires immediately when the     */
@@ -70,63 +69,74 @@ function magic_grid(data) {
 
     // Create an observable for tracking the target grid for the modal.
     ko_grid.tarGrid = ko.observable();
-    
-    $('div#filter-modal').modal({
-      backdrop: true,
-      keyboard: true,
-      show: false
-    }).on('click', 'button.add-filter', function(e) {
-      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
 
-      ko_grid.grids[gridIDX].filters.push(new TableFilter());
-    }).on('click', 'button.add-filter-next', function(e) {
-      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
-      var index = $(this).closest('tr').attr('index'),
-        idx = parseInt(parseInt(index) + 1);
+    $("div#filter-modal")
+      .modal({
+        backdrop: true,
+        keyboard: true,
+        show: false
+      })
+      .on("click", "button.add-filter", function(e) {
+        var gridIDX = $(e.originalEvent.currentTarget).data("grid_idx");
 
-      ko_grid.grids[gridIDX].filters.splice(idx, 0, new TableFilter());
-    }).on('click', 'button.remove-filter', function(e) {
-      var gridIDX = $(e.originalEvent.currentTarget).data('grid_idx');
-      var idx = $(this).closest('tr').attr('index');
+        ko_grid.grids[gridIDX].filters.push(new TableFilter());
+      })
+      .on("click", "button.add-filter-next", function(e) {
+        var gridIDX = $(e.originalEvent.currentTarget).data("grid_idx");
+        var index = $(this)
+            .closest("tr")
+            .attr("index"),
+          idx = parseInt(parseInt(index) + 1);
 
-      ko_grid.grids[gridIDX].filters.splice(idx, 1);
-    }).on('show.bs.modal', function(e) {
-      $('select.filter-type', this).hide();
-      $('input.filter-term', this).hide();
-      // console.log('Showing Modal');
-    }).on('shown.bs.modal', function(e) {
-      var gridIDX = $(this).data('grid_idx');
-      ko_grid.tarGrid(gridIDX);
-      console.log(ko_grid.tarGrid());
-      
-      // var grid_id = $(this).data('grid_id'),
-      //   grid = ko_grid.grids.find(function(grid) {
-      //     return grid.id == grid_id;
-      //   });
+        ko_grid.grids[gridIDX].filters.splice(idx, 0, new TableFilter());
+      })
+      .on("click", "button.remove-filter", function(e) {
+        var gridIDX = $(e.originalEvent.currentTarget).data("grid_idx");
+        var idx = $(this)
+          .closest("tr")
+          .attr("index");
 
-      //   $('select.filter-column', this).append(
-      //     '<option value="">Select Column...</option>'
-      //   );
-      //   for (let i = 0; i < grid.header().length; i++) {
-      //     const column = grid.header()[i];
-          
-      //     $('select.filter-column', this).append(
-      //       '<option value="' + column.col_name() + '">' +
-      //         column.title() +
-      //       '</option>'
-      //     );
-      //   }
-      
-      // console.log('Modal Shown', $('select.filter-column', this));
-    }).on('hide.bs.modal', function(e) {
+        ko_grid.grids[gridIDX].filters.splice(idx, 1);
+      })
+      .on("show.bs.modal", function(e) {
+        $("select.filter-type", this).hide();
+        $("input.filter-term", this).hide();
+        // console.log('Showing Modal');
+      })
+      .on("shown.bs.modal", function(e) {
+        var gridIDX = $(this).data("grid_idx");
+        ko_grid.tarGrid(gridIDX);
+        console.log(ko_grid.tarGrid());
 
-      console.log('Hiding Modal');
-    }).on('hidden.bs.modal', function(e) {
-      $('div#filter-modal').removeData('grid_id');
-      $('div#filter-modal').removeData('grid_idx');
-      console.log('Modal Hidden');
-    });
-    ko.applyBindings(ko_grid, $('#filter-modal')[0]);
+        // var grid_id = $(this).data('grid_id'),
+        //   grid = ko_grid.grids.find(function(grid) {
+        //     return grid.id == grid_id;
+        //   });
+
+        //   $('select.filter-column', this).append(
+        //     '<option value="">Select Column...</option>'
+        //   );
+        //   for (let i = 0; i < grid.header().length; i++) {
+        //     const column = grid.header()[i];
+
+        //     $('select.filter-column', this).append(
+        //       '<option value="' + column.col_name() + '">' +
+        //         column.title() +
+        //       '</option>'
+        //     );
+        //   }
+
+        // console.log('Modal Shown', $('select.filter-column', this));
+      })
+      .on("hide.bs.modal", function(e) {
+        console.log("Hiding Modal");
+      })
+      .on("hidden.bs.modal", function(e) {
+        $("div#filter-modal").removeData("grid_id");
+        $("div#filter-modal").removeData("grid_idx");
+        console.log("Modal Hidden");
+      });
+    ko.applyBindings(ko_grid, $("#filter-modal")[0]);
   };
 
   function Grid(data) {
@@ -138,7 +148,7 @@ function magic_grid(data) {
 
     self.id = data.id || self.getUID();
     self.source = data.source || null;
-    self.fixed = data['fixed-header'] || null;
+    self.fixed = data["fixed-header"] || null;
     self.hover = data.hover || null;
     self.compact = data.compact || null;
     self.striped = data.striped || null;
@@ -146,7 +156,8 @@ function magic_grid(data) {
     self.template = data.theme || null;
     self.filterable = data.filterable || null;
     self.paging = data.paging || null;
-  
+    self.sort = data.sortable || false;
+
     // Header Data For table/grid
     self.header = ko.observableArray();
     // Body Data for table/grid
@@ -174,43 +185,45 @@ function magic_grid(data) {
     // Filter Data
     self.filters = ko.observableArray();
     self.rows_sort_order = ko.observableArray();
-    self.rows_sorted = ko.pureComputed(function() {
-      var a = self.rows().slice(),
-        hasSort = self.dataMods.sortTog(),
-        defaultSort = self.dataMods.sortDef(),
-        sp = parseInt(self.paginated.selectedPage()),
-        spp = parseInt(self.paginated.selectedPerPage()),
-        args = self.rows_sort_order(),
-        filts = self.filters();
+    self.rows_sorted = ko
+      .pureComputed(function() {
+        var a = self.rows().slice(),
+          hasSort = self.dataMods.sortTog(),
+          defaultSort = self.dataMods.sortDef(),
+          sp = parseInt(self.paginated.selectedPage()),
+          spp = parseInt(self.paginated.selectedPerPage()),
+          args = self.rows_sort_order(),
+          filts = self.filters();
 
-      if (hasSort) {
-        if (defaultSort) {
-          args = defaults.concat(self.market_data_sort_order());
+        if (hasSort) {
+          if (defaultSort) {
+            args = defaults.concat(self.sort_order());
+          }
+          a.sort(self.makeSort(args));
         }
-        a.sort(app.makeSort(args));
-      }
 
-      if (filts.length > 0) {
-        for (var i = 0; i < filts.length; i++) {
-          var filter = filts[i];
-          a = a.filter(self.makeFilter(filter));
+        if (filts.length > 0) {
+          for (var i = 0; i < filts.length; i++) {
+            var filter = filts[i];
+            a = a.filter(self.makeFilter(filter));
+          }
+          // We could do some list length checking here, and alert the user
+          // the terms defined are returning no results. We could also mute the
+          // filters and just show the entire list.
         }
-        // We could do some list length checking here, and alert the user
-        // the terms defined are returning no results. We could also mute the
-        // filters and just show the entire list.
-      }
 
-      var start = parseInt((sp - 1) * spp),
-        end = parseInt(sp * spp);
-      a = a.slice(start, end);
+        var start = parseInt((sp - 1) * spp),
+          end = parseInt(sp * spp);
+        a = a.slice(start, end);
 
-      return a;
-    }).extend({
-      deferred: true
-    });
+        return a;
+      })
+      .extend({
+        deferred: true
+      });
     // Pagination Model
     self.paginated = {
-      perPage: ko.observableArray([5,10,20,50,100,250,500,1000]),
+      perPage: ko.observableArray([5, 10, 20, 50, 100, 250, 500, 1000]),
       selectedPerPage: ko.observable(100),
       selectedPage: ko.observable(1),
       totalResults: ko.computed(function() {
@@ -225,26 +238,28 @@ function magic_grid(data) {
         return vis;
       }),
       totalPagesList: ko.observableArray(),
-      totalPages: ko.pureComputed(function() {
-        var pp = self.paginated.selectedPerPage(),
-          tr = self.paginated.totalResults(),
-          tp = [];
-        var tpInt = Math.ceil(parseInt(tr) / parseInt(pp));
+      totalPages: ko
+        .pureComputed(function() {
+          var pp = self.paginated.selectedPerPage(),
+            tr = self.paginated.totalResults(),
+            tp = [];
+          var tpInt = Math.ceil(parseInt(tr) / parseInt(pp));
 
-        var i = 0;
-        do {
-          i += 1;
-          tp.push({page: i});
-        } while(i < tpInt);
-        // console.log(tp)
-        self.paginated.selectedPage(1);
-        // Callbacks for after pagination has completed.
-        // app.makeTableNice('#part-view');
-        // app.makeTableNice('.watch-table');
-        return tp;
-      }).extend({
-        deferred: true
-      })
+          var i = 0;
+          do {
+            i += 1;
+            tp.push({ page: i });
+          } while (i < tpInt);
+          // console.log(tp)
+          self.paginated.selectedPage(1);
+          // Callbacks for after pagination has completed.
+          // app.makeTableNice('#part-view');
+          // app.makeTableNice('.watch-table');
+          return tp;
+        })
+        .extend({
+          deferred: true
+        })
     };
 
     // Make Chaining work.
@@ -252,17 +267,17 @@ function magic_grid(data) {
   }
   Grid.prototype.getData = function() {
     var self = this;
-    $.getJSON('php/getSampleData.php', function(data, textStatus) {
+    $.getJSON("php/getSampleData.php", function(data, textStatus) {
       // console.log(data);
       for (var i = 0; i < data.rows.length; i++) {
         var row = data.rows[i],
-         cells = [];
+          cells = [];
 
         Object.keys(row).map(function(key) {
           // ES6 Computed Property Name.
           var cell = {
-            'key': key || '',
-            'value': row[key] || ''
+            key: key || "",
+            value: row[key] || ""
           };
           cells.push(cell);
         });
@@ -286,7 +301,9 @@ function magic_grid(data) {
 
     if (self.filterable) {
       var filter = `<tr>
-        <td  data-bind="colspan: header().length">
+        <td  data-bind="attr: {
+          colspan: header().length
+        }">
           <button class="btn btn-primary btn-xs filter">Search 
             <i class="fa fa-search"></i>
           </button>
@@ -330,13 +347,19 @@ function magic_grid(data) {
     }
 
     var classes = [],
-    thead = `<thead>
+      thead = `<thead>
               ${filter}
               <tr class="sticky" data-bind="foreach: header">
-                <th data-bind="text: title"></th>
+                <th data-bind="attr: {
+                  'col-name': col_name,
+                  'col-sortable': sort,
+                  'col-seachable': search,
+                  'col-data-type': type,
+                },
+                text: title"></th>
               </tr>
             </thead>`,
-    tbody = `<tbody data-bind="foreach: rows_sorted">
+      tbody = `<tbody data-bind="foreach: rows_sorted">
               <tr data-bind="foreach: cell_data">
                 <td data-bind="text: $data.value,
                   attr: {
@@ -345,47 +368,49 @@ function magic_grid(data) {
                 "></td>
               </tr>
             </tbody>`,
-    tfoot = `<tfoot>
+      tfoot = `<tfoot>
               ${paging}
             </tfoot>`;
-    
+
     if (self.striped) {
-      classes.push('table-striped');
+      classes.push("table-striped");
     }
     if (self.bordered) {
-      classes.push('table-bordered');
+      classes.push("table-bordered");
     }
     if (self.compact) {
-      classes.push('table-condensed');
+      classes.push("table-condensed");
     }
     if (self.hovered) {
-      classes.push('table-hover');
+      classes.push("table-hover");
     }
     // have to space separate the array and then make a string.
-    classes = classes.join(' ').toString();
+    classes = classes.join(" ").toString();
 
     var table = `<table id="${self.id}"
       class="table ${classes}"
       data-bind="with: grids[${self.grid_index}]">
       ${thead} ${tbody} ${tfoot}
     </table>`;
-    
+
     // Could be append to keep Custom Element Wrapper.
     // Incases where bootstrap is used as the theme,
     // we're going to replace the element, so we do not interfere,
     // with styling.
     $(self.dom_element).replaceWith(table);
-    if (typeof callback === 'function') {
+    if (typeof callback === "function") {
       callback();
     }
-    
+
     // Make Chaining work.
     return self;
   };
   Grid.prototype.getUID = function() {
     // Inspired by this SOF answer https://stackoverflow.com/a/6248722/5063323
     while (true) {
-      var uid = ("000000" + ((Math.random() * Math.pow(36, 6)) | 0).toString(36)).slice(-6);
+      var uid = (
+        "000000" + ((Math.random() * Math.pow(36, 6)) | 0).toString(36)
+      ).slice(-6);
       if (!ko_grid.gridUIDS.hasOwnProperty(uid)) {
         ko_grid.gridUIDS[uid] = true;
         return uid;
@@ -395,109 +420,248 @@ function magic_grid(data) {
   Grid.prototype.loadEvents = function() {
     var self = this;
 
-    var tuid = '#' + self.id;
+    $(document).on("mousedown", function(e) {
+      /**8               PREVENT TEXT FROM SELECTING              8**/
+      /*                                                            */
+      /* NOTE: We use this method to prevent the default action of  */
+      /* text being selected while holding the shift key. Isolated  */
+      /* to just the '.watch-table' we could re-use this in a new   */
+      /* scope in other places if necesary.                         */
+      /*                                                            */
+      /*         MAYBE WE MAKE A JQUERY EXTENSION?!?!?!?!?!??!?     */
+      /*                           ლ(ಠ益ಠ)ლ                         */
+      /*                                                            */
+      /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+
+      if (e.ctrlKey || e.shiftKey) {
+        // For non-IE browsers
+        e.preventDefault();
+
+        // For IE
+        if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+          this.onselectstart = function() {
+            return false;
+          };
+          var me = this; // capture in a closure
+          window.setTimeout(function() {
+            me.onselectstart = null;
+          }, 0);
+        }
+
+        // For Safari Not that we have to support safari, just CUZ!
+        document.getSelection().removeAllRanges();
+      }
+    });
+
+    var tuid = "#" + self.id;
     // Paging event Handlers.
-    $(tuid).on('click', 'ul.pagination li', function(ev) {
-      var pn = $(this).attr('page-number'),
+    $(tuid).on("click", "ul.pagination li", function(ev) {
+      var pn = $(this).attr("page-number"),
         spn = self.paginated.selectedPage(),
         tp = self.paginated.totalPages().length;
-      
-      if (pn == 'next' || pn == 'previous') {
-        var npn = pn == 'next' ? ++spn : pn == 'previous' ? --spn : null;
+
+      if (pn == "next" || pn == "previous") {
+        var npn = pn == "next" ? ++spn : pn == "previous" ? --spn : null;
         // console.log(npn);
         if (npn >= 1 && npn <= tp) {
           // Clear the active class from all pagers
-          $(this).siblings().removeClass('active');
-          $(this).removeClass('active');
-          $(this).siblings('[page-number="previous"]').removeClass('disabled');
-          $(this).siblings('[page-number="next"]').removeClass('disabled');
-          $(this).siblings("[page-number='" + npn + "']").addClass('active');
+          $(this)
+            .siblings()
+            .removeClass("active");
+          $(this).removeClass("active");
+          $(this)
+            .siblings('[page-number="previous"]')
+            .removeClass("disabled");
+          $(this)
+            .siblings('[page-number="next"]')
+            .removeClass("disabled");
+          $(this)
+            .siblings("[page-number='" + npn + "']")
+            .addClass("active");
           self.paginated.selectedPage(npn);
           if (npn == 1) {
             // console.log('BOTTOM');
-            $(this).addClass('disabled');
+            $(this).addClass("disabled");
           }
           if (npn == 10) {
             // console.log('TOP');
-            $(this).addClass('disabled');
+            $(this).addClass("disabled");
           }
         }
-      }
-      else {
-        $(this).siblings().removeClass('active');
-        $(this).addClass('active');
+      } else {
+        $(this)
+          .siblings()
+          .removeClass("active");
+        $(this).addClass("active");
         self.paginated.selectedPage(pn);
       }
     });
 
-    $(tuid).on('click', 'button.filter', function(ev) {
-      console.log(self.id, self.grid_index);
-      $('div#filter-modal').data('grid_id', self.id);
-      $('div#filter-modal').data('grid_idx', self.grid_index);
-      $('div#filter-modal').modal('show');
-    });
+    // Filtering Events
+    $(tuid)
+      .on("click", "button.filter", function(ev) {
+        console.log(self.id, self.grid_index);
+        $("div#filter-modal").data("grid_id", self.id);
+        $("div#filter-modal").data("grid_idx", self.grid_index);
+        $("div#filter-modal").modal("show");
+      })
+      .on("click", "thead tr th", function(ev) {
+        // does the column allow sorting.
+        let sortable = $(this).attr("col-sortable");
+        // check if the table allows sort, and col is sortable.
+        if (self.sort && sortable) {
+          // get the current sort condition.
+          let so = $(this).attr("col-sort-dir") || false,
+            col = $(this).attr("col-name");
+          if (so == "asc") {
+            $(this)
+              .find("i")
+              .remove();
+            self.rows_sort_order.remove(function(item) {
+              return item.col == col;
+            });
+            self.rows_sort_order.unshift(new ColSort(col, 'desc'));
+            $(this)
+              .attr("col-sort-dir", "desc")
+              .append('<i class="fas fa-sort-down pull-right"></i>');
+          } else if (so == "desc") {
+            $(this)
+              .attr("col-sort-dir", false)
+              .find("i")
+              .remove();
+            self.dataMods.sortTog(false);
+            self.rows_sort_order.remove(function(item) {
+              return item.col == col;
+            });
+          } else {
+            $(this)
+              .find("i")
+              .remove();
+            self.dataMods.sortTog(true);
+            self.rows_sort_order.remove(function(item) {
+              return item.col == col;
+            });
+            self.rows_sort_order.unshift(new ColSort(col, 'asc'));
+            $(this)
+              .attr("col-sort-dir", "asc")
+              .append('<i class="fas fa-sort-up pull-right"></i>');
+          }
+        }
+      })
+      .on("click", "tbody tr", function(ev) {})
+      .on("dblclick", "tbody tr", function(ev) {});
+
+    // Sort Events
+  };
+  Grid.prototype.makeSort = function(args) {
+    return function(a, b) {
+      function chunkify(t) {
+        var tz = [];
+        var x = 0,
+          y = -1,
+          n = 0,
+          i,
+          j;
+        // This while statement is an assignment not a conditional.
+        //  i should be `=` NOT == | ===
+        while ((i = (j = t.charAt(x++)).charCodeAt(0))) {
+          // console.log('I: ' + i, 'J: ' + j);
+          var m = i == 46 || (i >= 48 && i <= 57);
+          if (m !== n) {
+            tz[++y] = "";
+            n = m;
+          }
+          tz[y] += j;
+        }
+        // console.log(tz);
+        return tz;
+      }
+      return args
+        .map(function(filt) {
+          if (filt.order.toUpperCase() !== "ASC") {
+            colB = a.cell_data().find(function(item){
+              return item.key == filt.col;
+            }) || "0";
+            colA = b.cell_data().find(function(item){
+              return item.key == filt.col;
+            }) || "0";
+          } else {
+            colA = a.cell_data().find(function(item){
+              return item.key == filt.col;
+            }) || "0";
+            colB = b.cell_data().find(function(item){
+              return item.key == filt.col;
+            }) || "0";
+          }
+          console.log(colA, colB);
+          var aa = chunkify(colA.value.toString().toLowerCase());
+          var bb = chunkify(colB.value.toString().toLowerCase());
+          for (x = 0; aa[x] && bb[x]; x++) {
+            if (aa[x] !== bb[x]) {
+              var c = Number(aa[x]),
+                d = Number(bb[x]);
+              if (c == aa[x] && d == bb[x]) {
+                return c - d;
+              } else return aa[x] > bb[x] ? 1 : -1;
+            }
+          }
+          return aa.length - bb.length;
+        })
+        .reduce(function nonZeroVal(p, n) {
+          return p ? p : n;
+        }, 0);
+    };
   };
   Grid.prototype.makeFilter = function(filter) {
     return function(row) {
-      const t = filter.typeR() || '',
-        tm = filter.term() || '', 
-        col = filter.column() || '',
-        item = row.cell_data().find((item) => {
-          return item.key == col;
-        }) || '';
+      const t = filter.typeR() || "",
+        tm = filter.term() || "",
+        col = filter.column() || "",
+        item =
+          row.cell_data().find(item => {
+            return item.key == col;
+          }) || "";
       var val;
 
       if (typeof item.value === "function") {
         val = parseInt(item.value()) || item.value();
-      }
-      else {
+      } else {
         val = item.value;
       }
-      if (t == 'eq') {
+      if (t == "eq") {
         // Equals
-        return val ==  tm;
-      }
-      else if (t == 'ne') {
+        return val == tm;
+      } else if (t == "ne") {
         // Not Equals
-        return val !=  tm;
-      }
-      else if (t == 'lt') {
+        return val != tm;
+      } else if (t == "lt") {
         // Less Than
         return val < tm;
-      }
-      else if (t == 'le') {
+      } else if (t == "le") {
         // Less Than or Equal
         return val <= tm;
-      }
-      else if (t == 'gt') {
+      } else if (t == "gt") {
         // Greater Than
         return val > tm;
-      }
-      else if (t == 'ge') {
+      } else if (t == "ge") {
         // Greater Than or Equals
         return val >= tm;
-      }
-      else if (t == 'bw') {
+      } else if (t == "bw") {
         // Begins With
         return val.startsWith(tm);
-      }
-      else if (t == 'bn') {
+      } else if (t == "bn") {
         // Does Not Begin With
         return val.startsWith(tm);
-      }
-      else if (t == 'ew') {
+      } else if (t == "ew") {
         // Ends With
         return val.endsWith(tm);
-      }
-      else if (t == 'en') {
+      } else if (t == "en") {
         // Does Not End With
         return val.endsWith(tm);
-      }
-      else if (t == 'cn') {
+      } else if (t == "cn") {
         // Contains
         return val.includes(tm);
-      }
-      else if (t == 'ce') {
+      } else if (t == "ce") {
         // Does Not Contain
         return val.includes(tm);
       }
@@ -510,16 +674,26 @@ function magic_grid(data) {
 
     self.column = ko.observable();
     self.typeR = ko.observable();
-    self.term = ko.observable('');
+    self.term = ko.observable("");
 
     self.methods = ko.computed(function() {
-      if (typeof self.column() != 'undefined' && self.column()) {
-        var cur_col = ko_grid.grids[ko_grid.tarGrid()].header().find(function(el) {
-          return el.col_name() == self.column();
-        });
+      if (typeof self.column() != "undefined" && self.column()) {
+        var cur_col = ko_grid.grids[ko_grid.tarGrid()]
+          .header()
+          .find(function(el) {
+            return el.col_name() == self.column();
+          });
         return cur_col.searchMethods();
       }
     });
+  }
+
+  function ColSort(col, dir) {
+    // Column sorting Option
+    var self = this;
+
+    self.col = col;
+    self.order = dir;
   }
 
   function ColHeader(data) {
@@ -534,35 +708,32 @@ function magic_grid(data) {
     self.searchMethods = ko.computed(function() {
       // Returns all the available methods for filtering.
       var methods_string = [
-        'bw', // Begins With
-        'bn', // Does Not Begin With
-        'ew', // Ends With
-        'en', // Does Not End With
-        'cn', // Contains
-        'ce' // Does Not Contain
-      ],
+          "bw", // Begins With
+          "bn", // Does Not Begin With
+          "ew", // Ends With
+          "en", // Does Not End With
+          "cn", // Contains
+          "ce" // Does Not Contain
+        ],
         methods_int = [
-        'eq', // Equals
-        'ne', // Not Equal
-        'lt', // Less Than
-        'le', // Less Than or Equals
-        'gt', // Greater Than
-        'ge' // Greater Than or Equal
-      ];
+          "eq", // Equals
+          "ne", // Not Equal
+          "lt", // Less Than
+          "le", // Less Than or Equals
+          "gt", // Greater Than
+          "ge" // Greater Than or Equal
+        ];
 
       if (self.search() == true) {
-        if (self.type() == 'string') {
+        if (self.type() == "string") {
           return methods_string;
-        }
-        else if (self.type() == 'numeric') {
+        } else if (self.type() == "numeric") {
           return methods_int;
-        }
-        else {
+        } else {
           return methods_string.concat(methods_int);
         }
       }
     });
-
   }
 
   function Row(data) {
@@ -576,18 +747,18 @@ function magic_grid(data) {
         return true;
       })
     };
-
   }
-
 }
 var grid_model = new magic_grid(ko_grid);
 // init();
 
 $(document).ready(function() {
-  
   grid_model.load();
   ko_grid.grids.forEach(function(grid) {
-    grid.createTable().getData().loadEvents();
+    grid
+      .createTable()
+      .getData()
+      .loadEvents();
   });
   ko.applyBindings(ko_grid);
 });

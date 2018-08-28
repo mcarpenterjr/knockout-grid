@@ -11,7 +11,6 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 		<title>KO Grid Sample</title>
 
 		<!-- Styles -->
-		<link rel="stylesheet" type="text/css" href="/lib/font-awesome-4.7.0/css/font-awesome.min.css" />
 		<link rel="stylesheet" href="/lib/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="/lib/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css" />
 		<link rel="stylesheet" type="text/css" href="/lib/sweetalert/sweetalert.css" />
@@ -19,6 +18,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 		<!-- jQuery -->
 		<script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
 		<!-- Libraries -->
+		<script src="/lib/fontawesome-pro-5.2.0/js/all.min.js" data-auto-replace-svg="nest"></script>
 		<script src="/lib/knockout-2.7.17/knockout.js"></script>
 		<script src="/lib/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 		<script src="/lib/sweetalert/sweetalert.min.js"></script>
@@ -41,11 +41,11 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<h3 class="panel-title"> List controls (Mockup)</h3>
 						</div>
 						<div class="panel-body">
-							<button class="btn btn-primary btn-sm"><i class="fa fa-plus fa-lg"></i></button>
-							<button class="btn btn-primary btn-sm"><i class="fa fa-minus fa-lg"></i></button>
-							<button class="btn btn-primary btn-sm"><i class="fa fa-refresh fa-lg"></i></button>
-							<button class="btn btn-primary btn-sm"><i class="fa fa-undo fa-lg"></i></button>
-							<button class="btn btn-primary btn-sm"><i class="fa fa-columns fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fas fa-plus fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fas fa-minus fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fas fa-sync-alt fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fas fa-undo-alt fa-lg"></i></button>
+							<button class="btn btn-primary btn-sm"><i class="fas fa-columns fa-lg"></i></button>
 						</div>
 					</div>
 					<div class="panel panel-info">
@@ -72,7 +72,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<button id="load" class="btn btn-primary btn-sm pull-right">Load Data</button>
 							</p>
 	          </div>
-            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true">
+            <ko-table source="php/getSampleData.php" responsive="true" hover="true" borders="true" fixed-header="true" striped="true" theme="boot-strap" compact="true" filterable="true" paging="true" sortable="true">
             </ko-table>
           </div>
           <div class="panel panel-default">
