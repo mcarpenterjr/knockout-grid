@@ -53,7 +53,7 @@ require $_SERVER['DOCUMENT_ROOT'].'/inc/smtlogin.php';
 							<h3 class="panel-title">Just a Gentle Reminder</h3>
 						</div>
 						<div class="panel-body">
-							<p>1000 Records from the bin_scan table. The purpose of this
+							<p> The purpose of this
 							list is to show the simplicity and strength the KOjs lib offers.
 						  KO is simply iterating over json data received though an ajax request using an external php file.</p>
 							<p>This example showcases a new method of creating custom extendable grids from JSON data. Grids are specified by Custom HTML Elements and basic functionality; themeing, serching, sorting, paging, responsiveness... are all controlled by attributes on the element. This module creates an actual table element keeping semantics in tact.</p>

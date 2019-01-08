@@ -25,10 +25,10 @@ $data = $db->getResult($SQL);
 $output['rows'] = $data;
 
 // For this simplified case we do this setup manually without class.
-// Looking forward, if there was an API, this would be done once and done.
+// Looking forward, if there was an API, this would be once and done.
 // If we were to work at implementing a column class that looked at the 
 // select statement of our query we could automate some of the values here.
-// THIS IS A SUPER SIMPLIFICATION OF EXPECTED DATA.
+// This is an over simplification of the model.
 
 $output['header'] = array();
 
